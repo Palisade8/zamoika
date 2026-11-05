@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZаМойка | Расписание</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+    <!-- Шапка -->
+    <div class="header">
+        <div class="header-inner">
+            <h1>🚿 ZаМойка | Расписание</h1>
+
+            <div class="header-actions">
+                <!-- 🔥 Кнопка-иконка календаря -->
+                <button id="calendar-toggle-btn" class="calendar-toggle-btn" title="Показать/скрыть календарь">📅</button>
+
+                <!-- Блок авторизации (ТЕПЕРЬ ЭТО <form>) -->
+                <form id="auth-form" class="auth-section" onsubmit="return false;" style="display: flex; align-items: center; gap: 8px;">
+                    <select id="auth-user" class="auth-select">
+                        <option value="">Выберите сотрудника</option>
+                    </select>
+                    <input type="password" id="auth-password" class="auth-input" placeholder="Пароль" autocomplete="current-password">
+                    <button type="button" id="auth-btn" class="auth-btn">Войти</button>
+                    <div id="auth-error" class="auth-error"></div>
+                </form>
+
+                <!-- Блок пользователя (скрыт по умолчанию) -->
+                <div id="user-info" class="user-info" style="display: none;">
+                    <span>👋 Работает: <b id="user-name"></b></span>
+                    <button id="logout-btn" class="btn-close-shift">🚪 Закрыть смену</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контейнер -->
+    <div class="main-container">
+
+        <!-- Расписание (Таблица) -->
+        <div class="schedule-container">
+            <table class="calendar-table">
+                <thead id="calendar-head"></thead>
+                <tbody id="calendar-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Боковая панель (Календарь + Форма) -->
+        <div class="calendar-sidebar">
+
+            <!-- Календарь -->
+            <div id="calendar-panel" class="calendar-panel hidden">
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <button id="prev-month-btn">◀</button>
+                        <h3 id="current-month-label">Загрузка...</h3>
+                        <button id="next-month-btn">▶</button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+                    </div>
+                    <div id="calendar-days" class="calendar-days"></div>
+                </div>
+            </div>
+
+            <!-- Форма создания заявки -->
+            <div class="form-card auth-dependent">
+                <h3 style="margin-bottom: 10px; font-size: 14px;">📝 Новая заявка</h3>
+                <form id="new-booking-form" onsubmit="return false;">
+                    
+                    <!-- Переключатель типа операции -->
+                    <div class="form-group">
+                        <label>Тип операции</label>
+                        <div style="display: flex; gap: 10px;">
+                            <label id="service-type-label" style="flex: 1; text-align: center; padding: 10px; border: 2px solid var(--primary); border-radius: var(--radius-sm); cursor: pointer; background: var(--primary); color: white; font-weight: 600; transition: all 0.2s;">
+                                <input type="radio" name="operation-type" value="service" checked onchange="toggleOperationType()" style="display: none;">
+                                🔧 Услуги
+                            </label>
+                            <label id="product-type-label" style="flex: 1; text-align: center; padding: 10px; border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                                <input type="radio" name="operation-type" value="product" onchange="toggleOperationType()" style="display: none;">
+                                📦 Товары
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Поля для услуг -->
+                    <div id="service-fields">
+                        <div class="form-group">
+                            <label>📞 Телефон</label>
+                            <input type="text" id="client-phone" placeholder="8 (___) ___-__-__" maxlength="18">
+                            <div id="phone-error" class="field-error" style="display: none;"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>👤 Имя клиента</label>
+                            <input type="text" id="client-name" placeholder="Имя">
+                        </div>
+
+                        <!-- 🔥 НОВОЕ ПОЛЕ: ID-чата -->
+                        <div class="form-group">
+                            <label>💬 ID-чата (Авито, TG, MAX -  если номер скрыт)</label>
+                            <input type="text" id="client-chat-id" placeholder="Например: avito_12345">
+                        </div>
+
+                        <div class="form-group-inline">
+                            <label>📅 Дата</label>
+                            <input type="date" id="booking-date">
+                        </div>
+
+                        <!-- ИСПРАВЛЕНО: убран дубль ID, оставлен только один -->
+                        <div class="form-group-inline">
+                            <label>⏱ Длит. (мин)</label>
+                            <input type="number" id="booking-duration" name="duration" value="0" readonly>
+                        </div>
+
+                        <div class="form-group-inline">
+                            <label>🕐 Время</label>
+                            <div class="time-slot-container">
+                                <input type="text" id="booking-time-display" class="time-display-input" placeholder="Выберите время" readonly>
+                                <div id="time-slots-dropdown" class="time-slots-dropdown" style="display: none;"></div>
+                            </div>
+                            <select style="display:none;" id="booking-time" class="time-select">
+                                <option value="">Выберите время</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>🛠 Услуга</label>
+                            <select id="service-type" class="service-select">
+                                <option value="">Выберите услугу</option>
+                            </select>
+                            <div id="selected-services-wrapper" class="services-list hidden">
+                                <div id="selected-services-list"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-inline">
+                            <label>💰 Стоимость</label>
+                            <input type="text" id="booking-price" value="0 руб" readonly class="price-input">
+                        </div>
+                    </div>
+
+                    <!-- Поля для товаров -->
+                    <div id="product-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>📦 Товары</label>
+                            <div id="product-list"></div>
+                        </div>
+<div class="form-group" style="display: flex; gap: 10px; margin-bottom: 10px;">
+    <div style="flex: 1;">
+        <label style="font-size: 12px; color: #666;">👤 Имя (необязательно)</label>
+        <input type="text" id="product-client-name" placeholder="Иван" class="form-input" style="width: 100%;">
+    </div>
+    <div style="flex: 1;">
+        <label style="font-size: 12px; color: #666;">📞 Телефон (необязательно)</label>
+        <input type="tel" id="product-client-phone" placeholder="+7..." class="form-input" style="width: 100%;">
+    </div>
+</div>
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="is-arendych" style="width: 18px; height: 18px;">
+                                🚗 Машина Арендыча
+                            </label>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="is-paid-product" checked style="width: 18px; height: 18px;">
+                                ✅ Оплачено (наличные/терминал)
+                            </label>
+                        </div>
+                        <div class="form-group-inline">
+                            <label>💰 Итого</label>
+                            <input type="text" id="product-total" value="0 руб" readonly class="price-input">
+                        </div>
+                    </div>
+
+                    <!-- Общие поля -->
+                    <div class="form-group-inline">
+                        <label>🏷️ Скидка, %</label>
+                        <input type="number" id="discount" value="0" min="0" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📝 Примечание</label>
+                        <textarea id="booking-note" rows="2"></textarea>
+                    </div>
+
+                    <!-- БЛОК ЮРИДИЧЕСКОГО ЛИЦА -->
+                    <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e0e0e0;">
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600;">
+                                <input type="checkbox" id="is-legal-entity" style="width: 18px; height: 18px; cursor: pointer;">
+                                🏢 Юридическое лицо
+                            </label>
+                        </div>
+                        <div id="legal-entity-fields" class="hidden" style="padding: 10px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; margin-top: 8px;">
+                            <h4 style="margin: 0 0 10px 0; color: #333; font-size: 13px; border-bottom: 1px solid #eee; padding-bottom: 5px;">🏛️ Реквизиты организации</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div class="form-group" style="margin-bottom: 6px;">
+                                    <label style="font-size: 12px;">📄 ИНН</label>
+                                    <input type="text" id="legal-inn" placeholder="ИНН (10 или 12 цифр)" style="font-size: 12px; padding: 5px 8px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 6px;">
+                                    <label style="font-size: 12px;">📋 КПП</label>
+                                    <input type="text" id="legal-kpp" placeholder="КПП (9 цифр)" style="font-size: 12px; padding: 5px 8px;">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 6px;">
+                                <label style="font-size: 12px;">📛 Полное наименование</label>
+                                <input type="text" id="legal-orgname" placeholder="ООО 'Ромашка'" style="font-size: 12px; padding: 5px 8px;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 6px;">
+                                <label style="font-size: 12px;">🔢 ОГРН</label>
+                                <input type="text" id="legal-ogrn" placeholder="ОГРН (13 или 15 цифр)" style="font-size: 12px; padding: 5px 8px;">
+                            </div>
+                            <h4 style="margin: 10px 0 8px 0; color: #333; font-size: 13px; border-bottom: 1px solid #eee; padding-bottom: 5px;">🏦 Банковские реквизиты</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div class="form-group" style="margin-bottom: 6px;">
+                                    <label style="font-size: 12px;">🏦 БИК</label>
+                                    <input type="text" id="legal-bik" placeholder="БИК (9 цифр)" style="font-size: 12px; padding: 5px 8px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 6px;">
+                                    <label style="font-size: 12px;">🏛️ Наименование банка</label>
+                                    <input type="text" id="legal-bankname" placeholder="Тинькофф Банк" style="font-size: 12px; padding: 5px 8px;">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div class="form-group" style="margin-bottom: 6px;">
+                                    <label style="font-size: 12px;">💳 Расчетный счет</label>
+                                    <input type="text" id="legal-rs" placeholder="40802810... (20 цифр)" style="font-size: 12px; padding: 5px 8px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 6px;">
+                                    <label style="font-size: 12px;">🔗 Корреспондентский счет</label>
+                                    <input type="text" id="legal-ks" placeholder="30101810... (20 цифр)" style="font-size: 12px; padding: 5px 8px;">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 12px;">📌 Номер договора/авто</label>
+                                <input type="text" id="legal-contno" placeholder="Д-12345 или М715МХ35" style="font-size: 12px; padding: 5px 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Скрытое поле стоимости (ID total-cost сохранён) -->
+                    <input type="hidden" id="total-cost" name="total_cost" value="0">
+
+                    <button type="submit" class="btn-submit">✅ Создать заявку</button>
+                </form>
+            </div>
+
+            <!-- Кнопки навигации (УБРАН инлайн style="display:none", заменён на класс .hidden) -->
+            <button id="new-booking-btn" class="btn-new-booking auth-dependent hidden">➕ Новая заявка</button>
+            <button id="show-chemical-btn" class="btn-chemical auth-dependent hidden">🧪 Расходные материалы</button>
+            <button id="invoices-btn" class="btn-invoices auth-dependent hidden">📋 Расходные накладные</button>
+
+        </div>
+    </div>
+
+    <!-- Модальное окно деталей записи -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>📋 Детали записи</span>
+                <span class="modal-close">×</span>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Скрипты (добавлены defer и settings.js) -->
+    <script src="timeSlots.js" defer></script>
+    <script src="main.js" defer></script>
+    <script src="calendar.js" defer></script>
+    <script src="services.js" defer></script>
+    <script src="schedule.js" defer></script>
+    <script src="report.js" defer></script>
+    <script src="settings.js" defer></script>
+    <!-- Подключаем новый модуль авторизации -->
+
+    <!-- 🔥 Логика сворачивания календаря -->
+    <script>
+    (function () {
+        const btn = document.getElementById('calendar-toggle-btn');
+        const panel = document.getElementById('calendar-panel');
+        if (!btn || !panel) {
+            console.warn('[calendar-toggle] Не найдены #calendar-toggle-btn или #calendar-panel');
+            return;
+        }
+
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            panel.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!panel.classList.contains('hidden') &&
+                !panel.contains(e.target) &&
+                !btn.contains(e.target)) {
+                panel.classList.add('hidden');
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !panel.classList.contains('hidden')) {
+                panel.classList.add('hidden');
+            }
+        });
+    })();
+    // ============================================
+    // 🔥 СБРОС ДАТЫ НА СЕГОДНЯ ПОСЛЕ СОЗДАНИЯ ЗАЯВКИ
+    // ============================================
+    (function() {
+        const form = document.getElementById('new-booking-form');
+        const dateInput = document.getElementById('booking-date');
+        
+        if (!form || !dateInput) return;
+
+        // Функция установки сегодняшней даты
+        function setToday() {
+            const today = new Date();
+            // Формат YYYY-MM-DD с учетом часового пояса
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+            console.log('📅 Дата заявки сброшена на сегодня:', dateInput.value);
+        }
+
+        // Принудительно ставим сегодня при загрузке страницы
+        if (!dateInput.value) setToday();
+
+        // Перехватываем отправку формы
+        form.addEventListener('submit', function() {
+            // Ждем 1.5 секунды (пока пройдет запрос к API)
+            setTimeout(() => {
+                // Если форма не показывает ошибку (успешно создалось)
+                const errorEl = document.querySelector('.error-text, .field-error:not([style*="none"])');
+                
+                // Сбрасываем дату, время и телефон (чтобы было удобно вводить следующего)
+                if (!errorEl || errorEl.textContent.trim() === '') {
+                    setToday();
+                    // Опционально: очищаем телефон, имя и время для новой заявки
+                    // document.getElementById('client-phone').value = '';
+                    // document.getElementById('client-name').value = '';
+                    // document.getElementById('booking-time-display').value = '';
+                }
+            }, 1500); 
+        });
+    })();
+    </script>
+
+</body>
+</html>

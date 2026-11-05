@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>API Documentation - ZаМойка</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .endpoint { background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .method { font-weight: bold; color: #fff; padding: 2px 6px; border-radius: 3px; display: inline-block; }
+        .GET { background: #4CAF50; }
+        .POST { background: #2196F3; }
+        code { background: #333; color: #fff; padding: 2px 5px; border-radius: 3px; }
+        pre { background: #333; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>📚 API ZаМойка для внешних систем</h1>
+    
+    <h2>🔑 Авторизация</h2>
+    <p>Для всех запросов требуется передавать API ключ в заголовке:</p>
+    <pre><code>X-API-Key: ваш-секретный-ключ</code></pre>
+    
+    <h2>📡 Эндпоинты</h2>
+    
+    <div class="endpoint">
+        <span class="method GET">GET</span>
+        <strong>/api/external/services</strong>
+        <p>Получить список всех услуг</p>
+        <h4>Ответ:</h4>
+        <pre><code>{
+    "success": true,
+    "services": [
+        {
+            "id": 27,
+            "name": "Мойка + 0,4 л. шампуня 15 мин.",
+            "duration": 15,
+            "price": 250
+        }
+    ]
+}</code></pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method GET">GET</span>
+        <strong>/api/external/free-slots?date=2026-05-27&duration=30</strong>
+        <p>Получить свободные слоты на дату</p>
+        <h4>Параметры:</h4>
+        <ul>
+            <li><code>date</code> - дата в формате YYYY-MM-DD</li>
+            <li><code>duration</code> - длительность услуги в минутах</li>
+        </ul>
+        <h4>Ответ:</h4>
+        <pre><code>{
+    "success": true,
+    "slots": ["09:00", "09:15", "09:30"]
+}</code></pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method GET">GET</span>
+        <strong>/api/external/schedule?start=2026-05-27&end=2026-05-28</strong>
+        <p>Получить расписание на период</p>
+        <h4>Параметры:</h4>
+        <ul>
+            <li><code>start</code> - начальная дата (YYYY-MM-DD)</li>
+            <li><code>end</code> - конечная дата (YYYY-MM-DD)</li>
+        </ul>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method POST">POST</span>
+        <strong>/api/external/create-booking</strong>
+        <p>Создать новую запись</p>
+        <h4>Тело запроса:</h4>
+        <pre><code>{
+    "client_name": "Иванов Иван",
+    "client_phone": "89001234567",
+    "date": "2026-05-27",
+    "time": "10:00",
+    "duration": 30,
+    "services": [27, 28],
+    "note": "Комментарий",
+    "discount": 0
+}</code></pre>
+        <h4>Параметры:</h4>
+        <ul>
+            <li><code>client_name</code> - имя клиента (обязательно)</li>
+            <li><code>client_phone</code> - телефон (обязательно, 11 цифр)</li>
+            <li><code>date</code> - дата записи (обязательно)</li>
+            <li><code>time</code> - время записи (обязательно, HH:MM)</li>
+            <li><code>duration</code> - длительность в минутах (опционально, по умолчанию 60)</li>
+            <li><code>services</code> - массив ID услуг (обязательно)</li>
+            <li><code>note</code> - примечание (опционально)</li>
+            <li><code>discount</code> - скидка в % (опционально, 0-100)</li>
+        </ul>
+        <h4>Ответ:</h4>
+        <pre><code>{
+    "success": true,
+    "invno": 17503
+}</code></pre>
+    </div>
+    
+    <h2>📝 Примеры запросов</h2>
+    
+    <h3>JavaScript (fetch):</h3>
+    <pre><code>// Получить услуги
+fetch('https://ваш-домен.ru/api/external/services', {
+    headers: {
+        'X-API-Key': 'ваш-ключ'
+    }
+})
+.then(res => res.json())
+.then(data => console.log(data));
+
+// Создать запись
+fetch('https://ваш-домен.ru/api/external/create-booking', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': 'ваш-ключ'
+    },
+    body: JSON.stringify({
+        client_name: 'Петров Петр',
+        client_phone: '89009998877',
+        date: '2026-05-28',
+        time: '14:00',
+        duration: 30,
+        services: [27],
+        note: 'Позвонить за час',
+        discount: 10
+    })
+})
+.then(res => res.json())
+.then(data => console.log(data));</code></pre>
+
+    <h3>Python (requests):</h3>
+    <pre><code>import requests
+
+API_URL = "https://ваш-домен.ru/api/external"
+HEADERS = {"X-API-Key": "ваш-ключ"}
+
+# Получить услуги
+response = requests.get(f"{API_URL}/services", headers=HEADERS)
+services = response.json()
+
+# Получить свободные слоты
+response = requests.get(
+    f"{API_URL}/free-slots",
+    params={"date": "2026-05-28", "duration": 30},
+    headers=HEADERS
+)
+slots = response.json()
+
+# Создать запись
+booking_data = {
+    "client_name": "Сидоров Сидор",
+    "client_phone": "89001112233",
+    "date": "2026-05-28",
+    "time": "15:00",
+    "duration": 40,
+    "services": [29, 26],
+    "note": "С собой будет собака",
+    "discount": 0
+}
+response = requests.post(
+    f"{API_URL}/create-booking",
+    json=booking_data,
+    headers=HEADERS
+)
+result = response.json()</code></pre>
+</body>
+</html>

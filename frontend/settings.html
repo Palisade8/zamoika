@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ Настройки | Zamoika</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <h1>⚙️ Настройки системы</h1>
+            <div class="header-actions">
+                <a href="index.html" class="btn-close-shift">🏠 На главную</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings-container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="services">📋 Услуги</button>
+            <button class="tab-btn" data-tab="products">📦 Товары</button>
+            <button class="tab-btn" data-tab="chemicals">🧪 Расход химии</button>
+            <button class="tab-btn" data-tab="groups">🗂️ Группировка</button>
+        </div>
+
+        <div id="services" class="tab-content active">
+            <div class="settings-header-row">
+                <h3 class="modal-subtitle">Справочник услуг и товаров</h3>
+
+                <div class="settings-filter-group">
+                    <label class="filter-label">
+                    <input type="checkbox" id="filter-accs" class="filter-checkbox">
+                    Только аксессуары (ACCS)
+                    </label>
+                    <span id="filter-count" class="filter-count"></span>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="services-table" class="settings-table dynamic-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Цвет</th>
+                            <th>Ед.изм</th>
+                            <th>Цена</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Вкладка Товары -->
+        <div id="products" class="tab-content">
+            <div class="settings-header-row">
+                <h3 class="settings-title">Заведённые товары</h3>
+                <div class="settings-filter-group">
+                    <label class="filter-label">
+                        <input type="checkbox" id="filter-stock" class="filter-checkbox">
+                        Только в наличии (> 0)
+                    </label>
+                    <span id="stock-count" class="filter-count"></span>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="products-table" class="settings-table dynamic-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Цвет</th>
+                            <th>Название</th>
+                            <th>Ед.изм</th>
+                            <th>Остаток</th>
+                            <th style="text-align: center; width: 60px;">На сайте</th> <!-- 🔥 -->
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="chemicals" class="tab-content">
+            <h3 class="modal-subtitle">Нормы списания химии на услугу</h3>
+            <div class="add-row">
+                <div>
+                    <label>ARTNO услуги</label>
+                    <input type="number" id="chem-artno" placeholder="Например: 56">
+                </div>
+                <div>
+                    <label>Название химии</label>
+                    <input type="text" id="chem-name" placeholder="Например: Средство от мух">
+                </div>
+                <div>
+                    <label>Расход</label>
+                    <input type="number" id="chem-rate" placeholder="Например: 20">
+                </div>
+                <div>
+                    <button class="btn-save add-btn" onclick="addChemRate()">➕ Добавить</button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="chem-table" class="settings-table dynamic-table">
+                    <thead>
+                        <tr>
+                            <th>ARTNO</th>
+                            <th>Химическое средство</th>
+                            <th>Расход</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="chem-status" class="status-msg"></div>
+        </div>
+
+        <div id="groups" class="tab-content">
+            <h3 class="modal-subtitle">Группировка услуг для выпадающего списка</h3>
+            <div class="add-row">
+                <div>
+                    <label>Название группы</label>
+                    <input type="text" id="group-name" placeholder="Например: Мойки">
+                </div>
+                <div>
+                    <label>ARTNO услуг (через запятую)</label>
+                    <input type="text" id="group-artnos" placeholder="Например: 1, 2, 3">
+                </div>
+                <div>
+                    <button class="btn-save add-btn" onclick="addGroup()">➕ Создать группу</button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="groups-table" class="settings-table dynamic-table">
+                    <thead>
+                        <tr>
+                            <th>Группа</th>
+                            <th>ARTNO услуг</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="group-status" class="status-msg"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования группы -->
+    <div id="edit-group-modal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3>Редактирование группы: <span id="edit-group-name"></span></h3>
+                <span class="modal-close" onclick="closeEditGroupModal()">✕</span>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px; color: var(--text-dark);">Текущие услуги:</h4>
+                    <div id="edit-group-services-list" style="max-height: 300px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; background: var(--bg-light);"></div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 10px; color: var(--text-dark);">Добавить услугу:</h4>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <select id="edit-service-select" style="flex: 1; padding: 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px;">
+                            <option value="">-- Выберите услугу --</option>
+                        </select>
+                        <button class="btn-save add-btn" onclick="addServiceToGroup()">Добавить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeEditGroupModal()">Отмена</button>
+                <button class="btn-save" onclick="saveGroupChanges()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>
