@@ -89,7 +89,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 from routers import documents
 from routers import (
     schedule, booking, warehouse, asterisk, auth,
-    stock, discount, settings, report,
+    stock, discount, settings, report, close_day, lifepay,
 )
 
 # --- Публичные (без JWT) ---
@@ -108,6 +108,8 @@ app.include_router(asterisk.router,  dependencies=protected)
 app.include_router(discount.router,  dependencies=protected)
 app.include_router(settings.router,  dependencies=protected)
 app.include_router(report.router,    dependencies=protected)
+app.include_router(close_day.router, dependencies=protected)
+app.include_router(lifepay.router)  # Публичный роутер
 
 
 # ==========================================

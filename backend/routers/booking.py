@@ -281,7 +281,10 @@ def create_product_invoice(
     Продажа товаров клиенту — создаёт счёт (INVOICES) без накладной.
     """
     try:
-        log.info(f"📥 create-product-invoice: {data}")
+        log.info(f"📥 create-product-invoice received")
+        log.info(f"📥 items={data.items}")
+        log.info(f"📥 client_name={data.client_name}, client_phone={data.client_phone}")
+        log.info(f"📥 is_paid={data.is_paid}, discount={data.discount}")
 
         # Получаем имя сотрудника
         manager = safe_execute(
@@ -291,6 +294,43 @@ def create_product_invoice(
             fetch_one=True,
         )
         manager_name = to_cp1251(decode_fb(manager[0])) if manager else ""
+
+        # 🔥 НАХОДИМ ИЛИ СОЗДАЕМ КЛИЕНТА по телефону/имени
+        clnum = None
+        if getattr(data, 'is_arendych', False):
+            # Арендич — специальный клиент
+            cl = safe_execute(db, "SELECT CLNUM FROM CLIENTS WHERE CLPHONEMOB = '89810410000' OR CLPHONE = '89810410000'", fetch_one=True)
+            if cl:
+                clnum = cl[0]
+                log.info(f"✅ Найден клиент Арендич: CLNUM={clnum}")
+        elif data.client_phone:
+            # Ищем клиента по телефону
+            cl = safe_execute(
+                db,
+                "SELECT CLNUM FROM CLIENTS WHERE CLPHONEMOB = :p OR CLPHONE = :p",
+                {"p": data.client_phone},
+                fetch_one=True,
+            )
+            if cl:
+                clnum = cl[0]
+                log.info(f"✅ Клиент найден по телефону: {data.client_phone}, CLNUM={clnum}")
+            elif data.client_name:
+                # Создаём нового клиента
+                new_cl = safe_execute(
+                    db,
+                    """
+                    INSERT INTO CLIENTS (CLNAME, CLPHONEMOB, CLDEP)
+                    VALUES (:n, :p, 1)
+                    RETURNING CLNUM
+                    """,
+                    {"n": to_cp1251(data.client_name), "p": data.client_phone},
+                    fetch_one=True,
+                )
+                if new_cl:
+                    clnum = new_cl[0]
+                    log.info(f"✅ Создан новый клиент: {data.client_name}, CLNUM={clnum}")
+        else:
+            log.warning(f"⚠️ Нет client_phone или is_arendych — клиент не привязан")
 
         # Формируем NOTE
         if data.note and data.note.strip():
@@ -565,17 +605,21 @@ def arendych_report(month: str = Query(..., description="YYYY-MM"), db: Session 
             by_manager[m]["bonus"] += inv["bonus"]
 
         # 🔥 ДОБАВЛЯЕМ БЛОК ПРОДАЖ НЕЗАМЕРЗАЕК
+        # 🔥 ДОБАВЛЯЕМ БЛОК ПРОДАЖ НЕЗАМЕРЗАЕК
+        # Незамерзайки определяются по наличию "незамерз" или "antifreeze" в названии
+        # Или по списку артикулов ANTIFREEZE_ARTNOS
+        ANTIFREEZE_KEYWORDS = ["незамерз", "antifreeze", "антифриз", "жидкость"]
+
         antifreeze_items = []
         for inv in invoices:
             for item in inv["items"]:
-                # Ищем по артикулу или названию — незамерзайки обычно имеют определённый диапазон ARTNO
-                # Или можно искать по имени товара
-                item_name = item.get("name", "").lower()
+                item_name = (item.get("name", "") or "").lower()
                 artno = item.get("artno", 0)
 
                 # Проверяем, является ли товар незамерзайкой
-                # Замените ARTNO_RANGE на реальный диапазон ваших незамерзаек
-                if "незамерз" in item_name or "antifreeze" in item_name or artno in [100, 101, 102]:  # TODO: уточнить ARTNO
+                is_antifreeze = any(keyword in item_name for keyword in ANTIFREEZE_KEYWORDS)
+
+                if is_antifreeze:
                     antifreeze_items.append({
                         "invno": inv["invno"],
                         "contno": inv["contno"],
@@ -583,7 +627,36 @@ def arendych_report(month: str = Query(..., description="YYYY-MM"), db: Session 
                         "item_name": item["name"],
                         "qty": item["qty"],
                         "price": item["price"],
+                        "total": item["qty"] * item["price"],
                     })
+
+        # Группируем незамерзайки по дате и суммируем
+        antifreeze_by_date = {}
+        for item in antifreeze_items:
+            date = item["date"]
+            if date not in antifreeze_by_date:
+                antifreeze_by_date[date] = {
+                    "date": date,
+                    "total_qty": 0,
+                    "total_sum": 0,
+                    "by_car": {},
+                    "items_detail": []
+                }
+            antifreeze_by_date[date]["total_qty"] += item["qty"]
+            antifreeze_by_date[date]["total_sum"] += item["total"]
+
+            # Группируем по номеру авто
+            car = item["contno"] or "Без номера"
+            if car not in antifreeze_by_date[date]["by_car"]:
+                antifreeze_by_date[date]["by_car"][car] = {
+                    "car": car,
+                    "qty": 0,
+                    "sum": 0
+                }
+            antifreeze_by_date[date]["by_car"][car]["qty"] += item["qty"]
+            antifreeze_by_date[date]["by_car"][car]["sum"] += item["total"]
+
+            antifreeze_by_date[date]["items_detail"].append(item)
 
         return {
             "success": True,
@@ -594,7 +667,8 @@ def arendych_report(month: str = Query(..., description="YYYY-MM"), db: Session 
             "by_day": by_day,
             "by_manager": by_manager,
             "invoices": invoices,
-            "antifreeze_sales": antifreeze_items,  # 🔥 Новый блок
+            "antifreeze_sales": antifreeze_items,
+            "antifreeze_by_date": antifreeze_by_date,
         }
 
     except Exception as e:
