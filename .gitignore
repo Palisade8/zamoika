@@ -1,0 +1,29 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+logs/
+*.pyo
+
+# Environment (НЕ КОММИТИТЬ!)
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.fdb
+*.fdb.backup
+
+# Python backups
+*.bak
