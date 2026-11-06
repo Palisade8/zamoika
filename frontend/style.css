@@ -1,0 +1,2050 @@
+/* ==========================================
+   🎨 ZAMOIKA - GLOBAL STYLES
+   Clean Architecture | No Duplicates | Optimized
+   ========================================== */
+
+/* --- 1. RESET & VARIABLES --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root { 
+    --primary: #1a56db; 
+    --primary-light: #3b82f6; 
+    --primary-dark: #1e40af; 
+    --accent: #06b6d4; 
+    --bg-light: #f0f9ff; 
+    --bg-white: #ffffff; 
+    --text-dark: #1e293b; 
+    --text-gray: #64748b; 
+    --text-light: #94a3b8; 
+    --border: #e2e8f0; 
+    --success: #10b981; 
+    --shadow: 0 4px 24px rgba(0,0,0,0.08); 
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12); 
+    --radius: 12px; 
+    --radius-sm: 8px; 
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.5;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- 2. LAYOUT & HEADER --- */
+.header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a56db 100%);
+    color: white;
+    padding: 8px 0;
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+}
+.header-inner { 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 0 16px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-wrap: nowrap; 
+    gap: 12px; 
+}
+.header h1 { 
+    font-size: 18px; 
+    font-weight: 800; 
+    margin: 0; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    white-space: nowrap; 
+}
+.header-actions { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-left: auto; 
+}
+.user-info { 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+    background: rgba(255,255,255,0.12); 
+    padding: 5px 12px; 
+    border-radius: var(--radius-sm); 
+    font-size: 12px; 
+    font-weight: 600; 
+    white-space: nowrap; 
+}
+.btn-close-shift {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.btn-close-shift:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220,38,38,0.5);
+}
+
+.main-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* --- 3. SCHEDULE & CALENDAR --- */
+.schedule-container {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: white;
+    border-radius: var(--radius);
+    padding: 10px;
+    box-shadow: var(--shadow);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+.calendar-sidebar {
+    flex: 0 0 380px;
+    min-width: 320px;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    height: 100%;
+    padding-right: 4px;
+}
+.calendar-card { 
+    background: white; 
+    border-radius: var(--radius); 
+    width: 100%; /* Исправлено с 70% на 100% для сайдбара */
+    padding: 8px; 
+    box-shadow: var(--shadow); 
+    border: 1px solid var(--border); 
+}
+.calendar-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 8px; /* Исправлено: было margin-bottom: px; */
+}
+.calendar-header button { 
+    background: var(--bg-light); 
+    border: none; 
+    font-size: 14px; 
+    cursor: pointer; 
+    padding: 4px 10px; 
+    border-radius: var(--radius-sm); 
+    transition: all 0.2s; 
+    color: var(--primary); 
+}
+.calendar-header button:hover { 
+    background: var(--primary); 
+    color: white; 
+}
+.calendar-header h3 { 
+    font-size: 14px; 
+    font-weight: 700; 
+    margin: 0; 
+    color: var(--text-dark); 
+}
+.calendar-weekdays { 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    text-align: center; 
+    font-size: 11px; 
+    font-weight: 700; 
+    color: var(--text-gray); 
+    margin-bottom: 4px; 
+    text-transform: uppercase; 
+}
+.calendar-days { 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 3px; 
+}
+.calendar-day { 
+    aspect-ratio: 1; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 11px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    background: var(--bg-light); 
+    border: 2px solid transparent; 
+    transition: all 0.2s; 
+    font-weight: 600; 
+    color: var(--text-dark); 
+}
+.calendar-day:hover { 
+    background: var(--primary-light); 
+    color: white; 
+}
+.calendar-day.selected { 
+    background: var(--primary); 
+    color: white; 
+    border-color: var(--primary); 
+}
+.calendar-day.today { 
+    border: 2px solid var(--accent); 
+    font-weight: 600; 
+}
+.calendar-day.past { 
+    color: var(--text-light); 
+    background: #f1f5f9; 
+    cursor: not-allowed; 
+}
+
+.calendar-table { 
+    border-collapse: collapse; 
+    width: 100%; 
+    display: table; 
+    height: auto; 
+    flex: none;
+}
+.calendar-table th, .calendar-table td { 
+    border: 1px solid var(--border); 
+    padding: 4px; 
+    text-align: center; 
+    vertical-align: top; 
+    font-size: 10px; 
+}
+.calendar-table th { 
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+    color: white; 
+    font-weight: 700; 
+    font-size: 11px; 
+    padding: 6px 4px; 
+    position: sticky; 
+    top: 0; 
+    z-index: 2; 
+}
+.time-cell { 
+    background: var(--bg-light); 
+    font-weight: 700; 
+    width: 50px; 
+    font-size: 10px; 
+    padding: 4px 2px; 
+    position: sticky; 
+    left: 0; 
+    z-index: 1; 
+}
+
+/* --- 4. BOOKINGS & STATUS --- */
+.booking { 
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7); 
+    border-radius: 5px; 
+    padding: 3px 5px; 
+    margin: 1px 0; 
+    cursor: pointer; 
+    font-size: 9px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+    border-left: 2px solid #4caf50; 
+    text-align: left; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+.booking:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
+}
+.booking-status-scheduled { 
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2) !important; 
+    border-left: 2px solid #ff9800 !important; 
+}
+.booking-status-confirmed { 
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb) !important; 
+    border-left: 2px solid #2196f3 !important; 
+}
+.booking-status-completed { 
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7) !important; 
+    border-left: 2px solid #4caf50 !important; 
+    color: #1b5e20 !important; 
+}
+.booking-status-cancelled { 
+    background: linear-gradient(135deg, #ffebee, #ffcdd2) !important; 
+    border-left: 2px solid #f44336 !important; 
+    opacity: 0.7; 
+    text-decoration: line-through; 
+}
+.booking-overdue { 
+    animation: blink-red 1s ease-in-out infinite; 
+    font-weight: 700; 
+}
+.booking-status-scheduled.booking-overdue { 
+    animation: blink-orange 1s ease-in-out infinite; 
+}
+
+/* --- 5. FORMS & INPUTS --- */
+.form-group { 
+    margin-bottom: 6px; 
+}
+.form-group label { 
+    display: block; 
+    font-size: 13px; 
+    font-weight: 700; 
+    color: var(--text-dark); 
+    margin-bottom: 3px; 
+}
+.form-group input, .form-group select, .form-group textarea { 
+    width: 100%; 
+    padding: 6px 8px; 
+    border: 1.5px solid var(--border); 
+    border-radius: var(--radius-sm); 
+    font-size: 11px; 
+    font-family: inherit; 
+    transition: all 0.2s; 
+    background: white; 
+}
+.form-group input:focus, .form-group select:focus { 
+    outline: none; 
+    border-color: var(--primary); 
+    box-shadow: 0 0 0 2px rgba(26,86,219,0.1); 
+}
+.form-group-inline { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    margin-bottom: 12px; 
+}
+.form-group-inline label { 
+    display: block; 
+    margin-bottom: 0; 
+    white-space: nowrap; 
+    min-width: 110px; 
+    font-size: 12px; 
+}
+.form-group-inline input, .form-group-inline select { 
+    flex: 1; 
+    width: auto; 
+}
+.price-input { 
+    font-weight: 800; 
+    color: var(--success); 
+    font-size: 12px; 
+}
+.time-select[size="1"] { 
+    height: auto; 
+    padding: 6px 8px; 
+}
+.time-select[size="5"] { 
+    height: auto; 
+    min-height: 80px; 
+}
+.form-card {
+    display: block;
+    background: white;
+    border-radius: var(--radius);
+    padding: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+/* --- 6. BUTTONS --- */
+.btn-submit { 
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+    color: white; 
+    border: none; 
+    padding: 8px 12px; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    width: 100%; 
+    font-size: 11px; 
+    font-weight: 700; 
+    margin-top: 6px; 
+    transition: all 0.2s; 
+}
+.btn-submit:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 12px rgba(26,86,219,0.3); 
+}
+.btn-new-booking { 
+    background: linear-gradient(135deg, var(--primary), var(--accent)); 
+    color: white; 
+    border: none; 
+    padding: 8px 12px; 
+    border-radius: 16px; 
+    cursor: pointer; 
+    font-size: 11px; 
+    font-weight: 700; 
+    width: 100%; 
+    margin-bottom: 8px; 
+    transition: all 0.2s; 
+}
+.btn-new-booking:hover { 
+    transform: translateY(-1px); 
+}
+.btn-chemical { 
+    background: linear-gradient(135deg, var(--success), #059669); 
+    color: white; 
+    border: none; 
+    padding: 6px 10px; 
+    border-radius: 14px; 
+    cursor: pointer; 
+    font-size: 10px; 
+    font-weight: 700; 
+    margin-top: 6px; 
+    width: 100%; 
+    transition: all 0.2s; 
+}
+.btn-invoices { 
+    background: linear-gradient(135deg, #ff9800, #f57c00); 
+    color: white; 
+    border: none; 
+    padding: 6px 10px; 
+    border-radius: 14px; 
+    cursor: pointer; 
+    font-size: 10px; 
+    font-weight: 700; 
+    margin-top: 6px; 
+    width: 100%; 
+    transition: all 0.2s; 
+}
+.btn-edit { 
+    background: #2196f3; 
+    color: white; 
+    padding: 5px 10px; 
+    border-radius: 10px; 
+    border: none; 
+    cursor: pointer; 
+    margin-right: 4px; 
+    font-size: 10px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.btn-post { 
+    background: var(--success); 
+    color: white; 
+    padding: 5px 10px; 
+    border-radius: 10px; 
+    border: none; 
+    cursor: pointer; 
+    margin-right: 4px; 
+    font-size: 10px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.btn-unpost { 
+    background: #ff9800; 
+    color: white; 
+    padding: 5px 10px; 
+    border-radius: 10px; 
+    border: none; 
+    cursor: pointer; 
+    margin-right: 4px; 
+    font-size: 10px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.btn-edit:hover, .btn-post:hover, .btn-unpost:hover { 
+    transform: translateY(-1px); 
+    opacity: 0.9; 
+}
+.remove-btn { 
+    background: #f44336; 
+    color: white; 
+    border: none; 
+    border-radius: 10px; 
+    width: 20px; 
+    height: 20px; 
+    cursor: pointer; 
+    font-size: 12px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.2s; 
+}
+.remove-btn:hover { 
+    background: #d32f2f; 
+    transform: scale(1.05); 
+}
+.btn-save-status { 
+    background: linear-gradient(135deg, var(--primary), var(--accent)); 
+    color: white; 
+    border: none; 
+    padding: 10px 24px; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    font-size: 14px; 
+    font-weight: 700; 
+    transition: all 0.2s; 
+    width: 100%; 
+    margin-top: 16px; 
+}
+.btn-save-status:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 16px rgba(26,86,219,0.3); 
+}
+.btn-create { 
+    background: linear-gradient(135deg, var(--success), #059669); 
+    color: white; 
+    border: none; 
+    padding: 10px 24px; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    font-size: 14px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+    box-shadow: 0 2px 8px rgba(16,185,129,0.3); 
+}
+.btn-create:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 16px rgba(16,185,129,0.4); 
+}
+.back-btn { 
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+    color: white; 
+    border: none; 
+    padding: 6px 16px; 
+    border-radius: 14px; 
+    cursor: pointer; 
+    margin-bottom: 12px; 
+    font-size: 11px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.back-btn:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(26,86,219,0.2); 
+}
+.add-btn { 
+    background: linear-gradient(135deg, var(--success), #059669); 
+    color: white; 
+    border: none; 
+    padding: 5px 12px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    margin-top: 8px; 
+    font-size: 10px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.add-btn:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(16,185,129,0.3); 
+}
+.save-btn { 
+    background: linear-gradient(135deg, var(--success), #059669); 
+    color: white; 
+    padding: 6px 16px; 
+    border: none; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    font-weight: 700; 
+    transition: all 0.2s; 
+}
+.save-btn:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(16,185,129,0.3); 
+}
+.cancel-btn { 
+    background: linear-gradient(135deg, #94a3b8, #64748b); 
+    color: white; 
+    padding: 6px 16px; 
+    border: none; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    font-weight: 700; 
+    margin-left: 6px; 
+    transition: all 0.2s; 
+}
+.cancel-btn:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(148,163,184,0.3); 
+}
+.close-preview { 
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+    color: white; 
+    border: none; 
+    padding: 6px 12px; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    margin-top: 10px; 
+    font-weight: 700; 
+    transition: all 0.2s; 
+}
+.close-preview:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(26,86,219,0.2); 
+}
+.btn-call { 
+    background: linear-gradient(135deg, var(--success), #059669); 
+    color: white; 
+    border: none; 
+    border-radius: 20px; 
+    padding: 6px 14px; 
+    cursor: pointer; 
+    font-size: 12px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.btn-call:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 12px rgba(16,185,129,0.3); 
+}
+.btn-stock { 
+    background: linear-gradient(135deg, #2196f3, #1976d2); 
+    color: white; 
+    border: none; 
+    padding: 6px 12px; 
+    border-radius: var(--radius-sm); 
+    cursor: pointer; 
+    font-size: 11px; 
+    font-weight: 700; 
+    transition: all 0.2s; 
+}
+.btn-stock:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(33,150,243,0.3); 
+}
+
+/* --- 7. SERVICES & PRODUCTS UI --- */
+.service-add-row { 
+    display: flex; 
+    gap: 4px; 
+    align-items: center; 
+    margin-bottom: 6px; 
+}
+.service-select { 
+    flex: 1; 
+    height: auto; 
+    font-size: 11px; 
+    padding: 6px 8px; 
+    border-radius: var(--radius-sm); 
+    border: 1.5px solid var(--border); 
+}
+.services-list { 
+    min-height: 24px; 
+    background: var(--bg-light); 
+    border-radius: var(--radius-sm); 
+    padding: 4px; 
+    font-size: 10px; 
+    border: 1.5px solid var(--border); 
+    margin-bottom: 6px; 
+}
+.service-tag { 
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb); 
+    padding: 3px 6px; 
+    border-radius: 12px; 
+    margin: 1px; 
+    display: inline-block; 
+    font-size: 9px; 
+    font-weight: 600; 
+    color: var(--primary); 
+    border: 1px solid var(--primary-light); 
+}
+.remove-service { 
+    background: none; 
+    border: none; 
+    color: #dc3545; 
+    cursor: pointer; 
+    margin-left: 2px; 
+    font-size: 12px; 
+    transition: all 0.2s; 
+}
+.remove-service:hover { 
+    transform: scale(1.15); 
+}
+.service-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 6px 10px; 
+    background: white; 
+    border-radius: 6px; 
+    margin-bottom: 4px; 
+    font-size: 13px; 
+}
+.service-item:last-child { 
+    margin-bottom: 0; 
+}
+.remove-service-btn { 
+    background: #f44336; 
+    color: white; 
+    border: none; 
+    border-radius: 50%; 
+    width: 28px; 
+    height: 28px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.2s ease; 
+    flex-shrink: 0; 
+}
+.remove-service-btn:hover { 
+    background: #d32f2f; 
+    transform: scale(1.1); 
+}
+.modal-services-row { 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 12px; 
+    flex-wrap: wrap; 
+}
+.modal-services-list { 
+    flex: 1; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+}
+.service-tag-modal { 
+    font-size: 12px; 
+    font-weight: 600; 
+    color: #1e40af; 
+    display: inline-block; 
+}
+.service-edit-item { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 10px; 
+    padding: 8px 12px; 
+    border-bottom: 1px solid var(--border); 
+    background: var(--bg-light); 
+    border-radius: 8px; 
+    margin-bottom: 4px; 
+    animation: fadeIn 0.2s ease; 
+}
+.service-edit-item:last-child { 
+    margin-bottom: 0; 
+    border-bottom: none; 
+}
+.service-edit-item.removing { 
+    animation: fadeOut 0.2s ease forwards; 
+}
+.service-name { 
+    flex: 1; 
+    font-size: 13px; 
+    font-weight: 500; 
+    color: var(--text-dark); 
+    word-break: break-word; 
+}
+.service-price { 
+    font-size: 13px; 
+    font-weight: 700; 
+    color: var(--success); 
+    white-space: nowrap; 
+    min-width: 70px; 
+    text-align: right; 
+}
+.btn-add-service { 
+    background: linear-gradient(135deg, #10b981, #059669); 
+    color: white; 
+    border: none; 
+    border-radius: 50%; 
+    width: 36px; 
+    height: 36px; 
+    cursor: pointer; 
+    font-size: 22px; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.2s ease; 
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3); 
+}
+.btn-add-service:hover { 
+    background: linear-gradient(135deg, #059669, #047857); 
+    transform: scale(1.05); 
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); 
+}
+.add-service-row { 
+    display: flex; 
+    gap: 8px; 
+    margin-top: 10px; 
+    align-items: center; 
+}
+.modal-service-select { 
+    flex: 1; 
+    padding: 8px 12px; 
+    border: 1.5px solid var(--border); 
+    border-radius: 20px; 
+    font-size: 13px; 
+    font-family: inherit; 
+    background: white; 
+}
+.modal-service-select:focus { 
+    outline: none; 
+    border-color: var(--primary); 
+}
+
+/* --- 8. MODALS --- */
+.modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.6); 
+    align-items: center; 
+    justify-content: center; 
+    backdrop-filter: none; 
+}
+.modal-content { 
+    background: white; 
+    margin: 0 auto; 
+    border-radius: var(--radius); 
+    width: 60%; 
+    max-width: 97%; 
+    max-height: 90vh; 
+    overflow-y: auto; 
+    box-shadow: var(--shadow-lg); 
+    display: flex; 
+    flex-direction: column; 
+}
+.modal-header { 
+    padding: 16px 20px; 
+    border-bottom: 2px solid var(--border); 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-size: 18px; 
+    font-weight: 700; 
+    color: var(--text-dark); 
+    background: white; 
+    position: sticky; 
+    top: 0; 
+    z-index: 10; 
+    border-radius: var(--radius) var(--radius) 0 0; 
+}
+.modal-body { 
+    padding: 16px 20px; 
+    overflow-y: auto; 
+    max-height: calc(90vh - 120px); 
+}
+.modal-close { 
+    cursor: pointer; 
+    font-size: 22px; 
+    color: var(--text-gray); 
+    width: 30px; 
+    height: 30px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 50%; 
+    transition: all 0.2s; 
+}
+.modal-close:hover { 
+    background: var(--bg-light); 
+    color: var(--text-dark); 
+    transform: rotate(90deg); 
+}
+.modal-row { 
+    margin-bottom: 10px; 
+    padding: 6px 12px; 
+    background: var(--bg-light); 
+    border-radius: var(--radius-sm); 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    border: 1px solid var(--border); 
+    font-size: 14px; 
+}
+.modal-row:last-child { 
+    margin-bottom: 0; 
+}
+.modal-label { 
+    font-weight: 600; 
+    min-width: 100px; 
+    flex-shrink: 0; 
+    color: var(--text-gray); 
+    font-size: 13px; 
+}
+.modal-subtitle { 
+    font-size: 16px; 
+    font-weight: 600; 
+    color: var(--text-dark); 
+    margin-bottom: 16px; 
+}
+.modal-actions { 
+    display: flex; 
+    justify-content: flex-end; 
+    margin-top: 20px; 
+    padding-top: 20px; 
+    border-top: 1px solid var(--border); 
+}
+.modal-row:first-child { 
+    display: flex; 
+    align-items: center; 
+    flex-wrap: nowrap; 
+    gap: 6px; 
+    padding: 6px 12px; 
+}
+.modal-row:first-child .modal-label { 
+    min-width: auto; 
+    flex-shrink: 0; 
+}
+.modal-row:first-child > div { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    flex-wrap: nowrap; 
+    flex: 1; 
+}
+.modal-row:first-child label { 
+    margin-left: auto; 
+    white-space: nowrap; 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+}
+.modal-row:has(#modal-status-select) { 
+    display: flex; 
+    align-items: center; 
+    flex-wrap: nowrap; 
+    gap: 12px; 
+    padding: 6px 12px; 
+}
+.modal-row:has(#modal-status-select) .modal-label { 
+    min-width: auto; 
+    flex-shrink: 0; 
+    margin-bottom: 0; 
+}
+.modal-row:has(#modal-status-select) select { 
+    flex: 1; 
+    width: auto; 
+    margin: 0; 
+}
+.modal-row .btn-sm { 
+    padding: 5px 12px; 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 12px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+.modal-row .btn-sm:hover { 
+    background: var(--primary-dark); 
+    transform: translateY(-1px); 
+}
+.modal-info-row { 
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0); 
+    padding: 12px 16px; 
+    border-radius: var(--radius-sm); 
+    margin: 8px 0; 
+    display: flex; 
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+}
+.info-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+    font-size: 13px; 
+    flex: 1; 
+    min-width: 100px; 
+}
+.info-label { 
+    font-weight: 600; 
+    color: var(--text-gray); 
+}
+.info-value { 
+    font-weight: 700; 
+    color: var(--text-dark); 
+    font-size: 14px; 
+}
+.info-unit { 
+    font-size: 11px; 
+    color: var(--text-gray); 
+}
+.info-total { 
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9); 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+}
+.info-total .info-label { 
+    color: #2e7d32; 
+}
+.info-total .info-value { 
+    color: #1b5e20; 
+    font-size: 15px; 
+    font-weight: 800; 
+}
+.info-discount-input { 
+    width: 60px; 
+    padding: 4px 6px; 
+    border: 1.5px solid var(--border); 
+    border-radius: 16px; 
+    font-size: 12px; 
+    text-align: center; 
+    font-weight: 600; 
+    background: white; 
+}
+.info-discount-input:focus { 
+    outline: none; 
+    border-color: var(--primary); 
+}
+
+/* --- 9. REPORTS (Unified Block) --- */
+.report-section {
+    margin: 20px auto;
+    max-width: 900px;
+    background: var(--bg-white);
+    padding: 16px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.report-title {
+    margin: 0 0 12px 0;
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 700;
+}
+.report-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+}
+.report-date-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+#report-date {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.2s;
+}
+#report-date:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+.btn-report-generate,
+.btn-report-export,
+.btn-report-print {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.2s;
+    color: white;
+}
+.btn-report-generate { background: linear-gradient(135deg, var(--success), #059669); }
+.btn-report-generate:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+.btn-report-export { background: linear-gradient(135deg, #2196f3, #1976d2); }
+.btn-report-export:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3); }
+.btn-report-print { background: linear-gradient(135deg, #ff9800, #f57c00); }
+.btn-report-print:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3); }
+#report-result { margin-top: 16px; min-height: 50px; }
+.report-summary {
+    margin-bottom: 16px;
+    padding: 14px;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--success);
+}
+.report-summary-title { font-weight: 700; margin-bottom: 10px; color: #2e7d32; font-size: 15px; }
+.report-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; font-size: 14px; color: var(--text-dark); }
+.report-total-highlight { color: #1b5e20; font-weight: 800; font-size: 15px; }
+.report-table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-top: 12px; }
+.report-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; background: white; }
+.report-table thead tr { background: var(--bg-light); border-bottom: 2px solid var(--border); }
+.report-table th { padding: 10px 12px; text-align: left; color: var(--text-dark); font-weight: 700; white-space: nowrap; position: sticky; top: 0; background: var(--bg-light); }
+.report-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-gray); vertical-align: middle; }
+.report-table tbody tr:hover { background: var(--bg-light); }
+.report-table tbody tr:last-child td { border-bottom: none; }
+.report-cell-amount { text-align: right; white-space: nowrap; font-weight: 600; }
+.report-cell-discount { text-align: center; white-space: nowrap; }
+.report-cell-total { text-align: right; font-weight: 700; color: #2e7d32; white-space: nowrap; }
+.report-cell-services { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --- 10. SETTINGS PAGE --- */
+.settings-container { max-width: 1400px; margin: 20px auto; padding: 0 15px; background: white; border-radius: var(--radius); box-shadow: var(--shadow); min-height: calc(100vh - 100px); }
+.tabs { display: flex; gap: 5px; margin-bottom: 0; border-bottom: 2px solid var(--border); padding: 0 20px; background: white; border-radius: var(--radius) var(--radius) 0 0; position: sticky; top: 0; z-index: 10; }
+.tab-btn { padding: 12px 20px; background: var(--bg-light); border: none; cursor: pointer; font-weight: 600; color: var(--text-gray); border-radius: 8px 8px 0 0; transition: all 0.2s; font-size: 14px; margin-bottom: -2px; }
+.tab-btn:hover { background: #e2e8f0; color: var(--text-dark); }
+.tab-btn.active { background: white; color: var(--primary); border-bottom: 2px solid white; }
+.tab-content { display: none; padding: 20px; max-height: calc(100vh - 200px); overflow-y: auto; }
+.tab-content.active { display: block; }
+.table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-top: 15px; }
+.settings-table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; }
+.settings-table th, .settings-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.settings-table th { background: var(--bg-light); font-weight: 700; color: var(--text-dark); position: sticky; top: 0; z-index: 5; white-space: nowrap; cursor: pointer; user-select: none; position: relative; }
+.settings-table th:hover { background: #e2e8f0; }
+.settings-table tbody tr:hover { background: var(--bg-light); }
+.sort-indicator { margin-left: 5px; opacity: 0.5; font-size: 12px; }
+.settings-table th[data-sort-dir="asc"] .sort-indicator, .settings-table th[data-sort-dir="desc"] .sort-indicator { opacity: 1; color: var(--primary); }
+.add-row { display: flex; gap: 12px; margin-bottom: 20px; align-items: flex-end; flex-wrap: wrap; padding: 15px; background: var(--bg-light); border-radius: var(--radius-sm); }
+.add-row > div { flex: 1; min-width: 150px; }
+.add-row label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--text-gray); font-size: 12px; }
+.status-msg { margin-top: 15px; padding: 12px 16px; border-radius: var(--radius-sm); display: none; font-weight: 600; animation: slideDown 0.3s ease; }
+.status-msg.success { background: #d1fae5; color: #065f46; border-left: 4px solid var(--success); display: block; }
+.status-msg.error { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; display: block; }
+.settings-header-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+.settings-title { margin: 0; font-size: 18px; font-weight: 700; color: var(--text-dark); white-space: nowrap; }
+.settings-filter-group { display: flex; align-items: center; gap: 15px; }
+.filter-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: var(--text-dark); font-size: 14px; user-select: none; }
+.filter-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+.filter-count { color: var(--text-gray); font-size: 13px; font-weight: 500; }
+
+/* --- 11. UTILITIES & STATES --- */
+.auth-dependent { display: none; }
+.auth-dependent.visible { display: block !important; }
+.hidden { display: none; }
+.loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.95); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px); }
+.loading-spinner { width: 36px; height: 36px; border: 4px solid var(--border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+.loading-text { text-align: center; padding: 24px; color: var(--text-gray); font-size: 14px; font-style: italic; }
+.error-message { color: #d32f2f; background: linear-gradient(135deg, #ffebee, #ffcdd2); padding: 8px 12px; border-radius: var(--radius-sm); margin: 8px 0; font-size: 11px; font-weight: 600; border: 1.5px solid #f44336; }
+.error-text { text-align: center; padding: 24px; color: #d32f2f; font-weight: 600; background: #ffebee; border-radius: var(--radius-sm); }
+.empty-state { text-align: center; padding: 24px; color: var(--text-gray); font-size: 14px; }
+.toast { position: fixed; bottom: 12px; right: 12px; background: linear-gradient(135deg, var(--text-dark), #334155); color: white; padding: 10px 16px; border-radius: var(--radius-sm); z-index: 1001; animation: slideIn 0.3s ease-out; font-size: 11px; font-weight: 600; max-width: 280px; box-shadow: var(--shadow-lg); }
+.sync-status { display: flex; align-items: center; gap: 5px; margin-left: 10px; font-size: 10px; background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 12px; font-weight: 600; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.sync-dot.online { background: var(--success); box-shadow: 0 0 4px var(--success); animation: pulse 2s infinite; }
+.sync-dot.offline { background: #ff9800; box-shadow: 0 0 4px #ff9800; }
+.no-slots { padding: 12px; text-align: center; color: var(--text-gray); grid-column: 1 / -1; font-size: 11px; font-weight: 600; }
+.field-error { margin-top: 6px; padding: 8px 12px; background: #ffebee; border-left: 4px solid #d32f2f; border-radius: 4px; color: #d32f2f; font-size: 13px; font-weight: 500; display: none; animation: slideDown 0.3s ease; }
+#client-phone.input-error { border-color: #d32f2f !important; box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15) !important; background: #fff5f5 !important; }
+
+/* --- 12. ANIMATIONS --- */
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink-red { 0% { background-color: #ffebee; border-left-color: #f44336; } 50% { background-color: #ff5252; border-left-color: #d32f2f; } 100% { background-color: #ffebee; border-left-color: #f44336; } }
+@keyframes blink-orange { 0% { background-color: #fff3e0; border-left-color: #ff9800; } 50% { background-color: #ffb74d; border-left-color: #f57c00; } 100% { background-color: #fff3e0; border-left-color: #ff9800; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOut { to { opacity: 0; transform: translateX(10px); } }
+
+/* --- 13. RESPONSIVE --- */
+@media (max-width: 900px) {
+    body { overflow: auto; height: auto; display: block; }
+    .main-container {
+        flex-direction: column;
+        overflow: visible;
+        height: auto;
+        min-height: 0;
+    }
+    .schedule-container {
+        flex: none;
+        width: 100%;
+        max-height: 70vh;
+    }
+    .calendar-sidebar {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: auto;
+        overflow: visible;
+    }
+    .modal-content { width: 95%; margin: 10% auto; padding: 12px; }
+    .filter-bar { flex-direction: column; align-items: stretch; }
+    .filter-bar input, .filter-bar button { width: 100%; }
+}
+@media (max-width: 768px) {
+    .report-section { margin: 12px 8px; padding: 12px; }
+    .report-controls { flex-direction: column; align-items: stretch; }
+    .btn-report-generate, .btn-report-export, .btn-report-print { width: 100%; padding: 10px; }
+    .report-summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .settings-container { margin: 10px auto; padding: 0 10px; }
+    .tabs { padding: 0 10px; overflow-x: auto; }
+    .tab-btn { padding: 10px 15px; font-size: 13px; white-space: nowrap; }
+    .tab-content { padding: 15px 10px; }
+    .add-row { flex-direction: column; }
+    .add-row > div { width: 100%; }
+}
+@media (max-width: 600px) { 
+    .header { padding: 6px 0; } 
+    .header h1 { font-size: 14px; } 
+    .calendar-table th, .calendar-table td { padding: 2px 1px; font-size: 8px; } 
+    .time-cell { width: 36px; font-size: 8px; } 
+    .btn-edit, .btn-post, .btn-unpost { padding: 3px 6px; font-size: 9px; margin-right: 3px; } 
+    .modal-info-row { flex-direction: column; gap: 8px; } 
+    .info-item { justify-content: space-between; } 
+    .settings-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .settings-filter-group { width: 100%; justify-content: space-between; }
+}
+@media (max-width: 480px) { 
+    .time-slots-dropdown { width: 260px; right: 0; grid-template-columns: repeat(4, 1fr); } 
+    .report-summary-grid { grid-template-columns: 1fr; }
+    .report-title { font-size: 14px; }
+}
+
+/* ==========================================
+   📋 СТРАНИЦА НАКЛАДНЫХ (invoices.html)
+   ========================================== */
+
+/* Страница накладных — обычный поток документа, вертикальный скролл */
+body.page-invoices {
+    overflow: auto;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-light);
+}
+
+/* Основной контейнер — вертикальная раскладка */
+.page-content {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Карточка — белая плашка с тенью */
+.page-content .card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 16px;
+}
+
+/* Фильтры — компактный ряд */
+.page-content .filter-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.page-content .filter-bar label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.page-content .filter-bar input[type="date"] {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.2s;
+}
+
+.page-content .filter-bar input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.page-content .filter-bar .btn-submit {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 13px;
+    margin-top: 0;
+}
+
+.page-content .filter-bar .btn-success {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+.page-content .filter-bar .btn-accent {
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+}
+
+/* Таблицы накладных — без вложенных скроллов */
+.page-content .invoices-table,
+.page-content .detail-table,
+.page-content .stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: white;
+}
+
+.page-content .invoices-table th,
+.page-content .detail-table th,
+.page-content .stock-table th {
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--bg-light);
+    font-weight: 700;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.page-content .invoices-table td,
+.page-content .detail-table td,
+.page-content .stock-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dark);
+}
+
+.page-content .invoices-table tr:hover,
+.page-content .stock-table tr:hover {
+    background: var(--bg-light);
+    cursor: pointer;
+}
+
+/* Статусы */
+.page-content .status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.page-content .status-posted {
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+    color: #2e7d32;
+}
+
+.page-content .status-draft {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ff9800;
+}
+
+/* Заголовки внутри карточек */
+.page-content h3,
+.page-content h4 {
+    margin-top: 0;
+    color: var(--text-dark);
+}
+
+.page-content h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.page-content h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Превью-блоки */
+.page-content .chemical-preview,
+.page-content .stock-preview {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+}
+
+.page-content .stock-preview {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+/* Отчёт */
+.page-content .report-section {
+    margin: 0;
+    max-width: 100%;
+}
+
+.page-content .report-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+}
+
+.page-content .report-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+/* Кнопка "Назад" — компактная */
+.page-content .back-btn,
+.header .back-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* Мобильные — всё в одну колонку */
+@media (max-width: 768px) {
+    .page-content {
+        padding: 12px 8px 30px;
+    }
+    
+    .page-content .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .page-content .filter-bar input[type="date"],
+    .page-content .filter-bar .btn-submit,
+    .page-content .filter-bar .btn-stock {
+        width: 100%;
+    }
+    
+    .page-content .invoices-table th,
+    .page-content .invoices-table td,
+    .page-content .detail-table th,
+    .page-content .detail-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
+/* ==========================================
+   📑 ВКЛАДКИ на странице накладных
+   ========================================== */
+.page-content .tabs-nav {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--border);
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    flex-wrap: wrap;
+}
+
+.page-content .tab-item {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-gray);
+    font-size: 14px;
+    transition: all 0.2s;
+    border-radius: 0;
+    font-family: inherit;
+    margin-bottom: -2px;
+}
+
+.page-content .tab-item:hover {
+    color: var(--primary);
+    background: rgba(26, 86, 219, 0.05);
+}
+
+.page-content .tab-item.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: transparent;
+}
+
+/* Панели вкладок */
+.page-content .tab-panel {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.page-content .tab-panel.active {
+    display: flex;
+}
+
+/* ==========================================
+   📋 КОМПАКТНАЯ ТАБЛИЦА накладных
+   ========================================== */
+.page-content .invoices-table {
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.page-content .invoices-table th {
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.page-content .invoices-table td {
+    padding: 6px 12px;
+    vertical-align: middle;
+}
+
+.page-content .invoices-table tr {
+    line-height: 1.2;
+}
+
+/* Компактные статусы */
+.page-content .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* ==========================================
+   🧪 Расход химии — компактная таблица
+   ========================================== */
+.page-content .chemical-preview .detail-table,
+.page-content #chemical-preview .detail-table {
+    font-size: 13px;
+}
+
+.page-content .chemical-preview .detail-table th,
+.page-content .chemical-preview .detail-table td,
+.page-content #chemical-preview .detail-table th,
+.page-content #chemical-preview .detail-table td {
+    padding: 6px 10px;
+}
+
+/* ==========================================
+   📦 Остатки на складе — компактная таблица
+   ========================================== */
+.page-content .stock-preview {
+    padding: 16px;
+}
+
+.page-content .stock-preview .stock-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.page-content .stock-preview .stock-header h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.page-content .stock-preview .stock-search {
+    padding: 6px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    min-width: 240px;
+}
+
+.page-content .stock-preview .stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--text-gray);
+    flex-wrap: wrap;
+}
+
+.page-content .stock-preview .stats span {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.page-content .stock-table {
+    font-size: 13px;
+}
+
+.page-content .stock-table th,
+.page-content .stock-table td {
+    padding: 5px 10px;
+}
+
+/* Ограничим высоту скролла склада */
+.page-content .stock-preview > div[style*="overflow"] {
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+/* ==========================================
+   📊 Отчёт — таблица компактнее
+   ========================================== */
+.page-content .report-section .report-table {
+    font-size: 12px;
+}
+
+.page-content .report-section .report-table th,
+.page-content .report-section .report-table td {
+    padding: 6px 8px;
+}
+
+/* ==========================================
+   🎯 Дополнительно: убрать излишние отступы
+   ========================================== */
+.page-content .card {
+    padding: 12px 16px;
+}
+
+.page-content .card + .card {
+    margin-top: 0;
+}
+
+/* На маленьких экранах — компактнее */
+@media (max-width: 768px) {
+    .page-content .tab-item {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .page-content .tabs-nav {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+    
+    .page-content .invoices-table th,
+    .page-content .invoices-table td {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+}
+
+/* ==========================================
+   🟢 Подсветка дат с бронями в календаре
+   ========================================== */
+.calendar-day.has-bookings {
+    position: relative;
+    color: #065f46;                /* тёмно-зелёный */
+    font-weight: 700;
+}
+
+.calendar-day.has-bookings::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    background: var(--success);    /* зелёная точка */
+    border-radius: 50%;
+}
+
+.calendar-day.has-bookings.today {
+    background: #ecfdf5;           /* лёгкий зелёный фон */
+}
+
+.calendar-day.has-bookings.selected,
+.calendar-day.has-bookings.range-start,
+.calendar-day.has-bookings.range-end,
+.calendar-day.has-bookings.in-range {
+    color: white;                  /* если выбрана — белый текст */
+}
+
+/* Если дата в прошлом — не подсвечиваем */
+.calendar-day.has-bookings.past {
+    color: var(--text-light);
+    opacity: 0.6;
+}
+
+.calendar-day.has-bookings.past::after {
+    display: none;
+}
+
+/* ==========================================
+   🟢 Точки броней при выделении даты
+   ========================================== */
+
+/* При выделении (selected/range) — точка становится яркой и хорошо видимой */
+.calendar-day.has-bookings.selected::after,
+.calendar-day.has-bookings.range-start::after,
+.calendar-day.has-bookings.range-end::after,
+.calendar-day.has-bookings.in-range::after {
+    background: #fbbf24;    /* жёлто-оранжевая точка */
+    box-shadow: 0 0 4px rgba(251, 191, 36, 0.9);
+    width: 6px;
+    height: 6px;
+}
+
+/* Число при выделении — жирнее и с тенью для контраста */
+.calendar-day.has-bookings.selected,
+.calendar-day.has-bookings.range-start,
+.calendar-day.has-bookings.range-end,
+.calendar-day.has-bookings.in-range {
+    color: #ffffff;
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* In-range — чуть светлее фон, но число тёмное */
+.calendar-day.has-bookings.in-range {
+    color: #1e293b;
+    text-shadow: none;
+}
+
+/* Для in-range — точка остаётся зелёной */
+.calendar-day.has-bookings.in-range::after {
+    background: var(--success);
+    box-shadow: none;
+    width: 5px;
+    height: 5px;
+}
+
+/* ==========================================
+   📊 Индикация загруженности в календаре
+   ========================================== */
+
+/* Базовый кружок */
+.calendar-day.has-bookings::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* 🟢 Низкая загруженность (1-2 брони) — зелёная */
+.calendar-day.load-low::after {
+    background: #10b981;
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+}
+
+/* 🟡 Средняя (3-5) — жёлтая */
+.calendar-day.load-mid::after {
+    background: #f59e0b;
+    box-shadow: 0 0 5px rgba(245, 158, 11, 0.7);
+    width: 7px;
+    height: 7px;
+}
+
+/* 🔴 Высокая (6+) — красная */
+.calendar-day.load-high::after {
+    background: #ef4444;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+    width: 8px;
+    height: 8px;
+    animation: pulse-load 2s infinite;
+}
+
+@keyframes pulse-load {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* При выделении — жёлтая точка вместо цвета уровня */
+.calendar-day.has-bookings.selected::after,
+.calendar-day.has-bookings.range-start::after,
+.calendar-day.has-bookings.range-end::after {
+    background: #fbbf24 !important;
+    box-shadow: 0 0 6px rgba(251, 191, 36, 1) !important;
+    border: 1.5px solid #fff;
+}
+
+/* Число — жирнее и контрастнее */
+.calendar-day.load-high {
+    font-weight: 800;
+    color: #991b1b;
+}
+
+.calendar-day.load-mid {
+    font-weight: 700;
+    color: #92400e;
+}
+
+/* ==========================================
+   📊 Вариант B: цветной фон ячейки
+   ========================================== */
+
+/* Раскомментируйте этот блок, чтобы включить вариант B */
+
+/*
+.calendar-day.load-low {
+    background: #ecfdf5 !important;
+    border-color: #a7f3d0 !important;
+}
+
+.calendar-day.load-mid {
+    background: #fffbeb !important;
+    border-color: #fde68a !important;
+}
+
+.calendar-day.load-high {
+    background: #fef2f2 !important;
+    border-color: #fecaca !important;
+    color: #991b1b !important;
+    font-weight: 800 !important;
+}
+
+.calendar-day.load-low:hover,
+.calendar-day.load-mid:hover,
+.calendar-day.load-high:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.calendar-day.load-low.selected,
+.calendar-day.load-mid.selected,
+.calendar-day.load-high.selected {
+    background: var(--primary) !important;
+    color: white !important;
+}
+*/
+/* ==========================================
+   🕒 Выпадающий список времени (Time Slots)
+   ========================================== */
+
+/* Контейнер, в котором лежит инпут и выпадашка */
+.time-slot-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Выпадающее окно со слотами */
+.time-slots-dropdown {
+    position: absolute;
+    top: 100%;
+    left: -80px; /* 🔥 Сдвигаем левее (подберите значение, чтобы встало ровно) */
+    width: 320px; /* 🔥 Фиксированная ширина, чтобы не было горизонтального скролла */
+    max-height: 350px; /* 🔥 Увеличиваем высоту, чтобы влезло больше строк */
+    overflow-y: auto; /* Оставляем вертикальный скролл только если реально не влезает */
+    overflow-x: hidden; /* 🔥 Убираем горизонтальный скролл */
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    
+    /* Сетка из 5 колонок */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+}
+
+/* Кнопка со временем */
+.time-slot-btn {
+    padding: 6px 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #f8fafc;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+}
+/* Кнопка со временем */
+.time-slot-btn {
+    padding: 6px 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #f8fafc;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    width: 100%; /* Растягиваем кнопку на всю ячейку сетки */
+}
+
+/* Наведение на свободный слот */
+.time-slot-btn:hover:not(:disabled) {
+    background: var(--primary-light);
+    color: #fff;
+    border-color: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+/* 🔴 Занятый слот (те, что с классом busy-slot) */
+.time-slot-btn.busy-slot,
+.time-slot-btn:disabled {
+    background: #fce4ec !important; /* Светло-розовый фон */
+    color: #c2185b !important;      /* Тёмно-розовый текст */
+    text-decoration: line-through !important; /* Зачеркнутый */
+    border-color: #f48fb1 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 480px) {
+    .time-slots-dropdown {
+        grid-template-columns: repeat(4, 1fr); /* На телефонах по 4 в ряд */
+    }
+    .time-slot-btn {
+        font-size: 10px;
+        padding: 4px 1px;
+    }
+}
+
+
+/* ============================================
+   🔥 Кнопка-иконка календаря в шапке
+   ============================================ */
+.calendar-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.calendar-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.30);
+    transform: scale(1.05);
+}
+
+.calendar-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* ============================================
+   🔥 Панель календаря (сворачиваемая)
+   ============================================ */
+.calendar-panel.hidden {
+    display: none;
+}
+
+/* ============================================
+   🔥 Таблица отчёта Арендыча (как в Excel)
+   ============================================ */
+.arendych-table th,
+.arendych-table td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.arendych-table thead th {
+    background: #d9ead3;
+    font-weight: 600;
+    color: #274e13;
+}
+
+.arendych-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.arendych-table .report-cell-amount {
+    text-align: right;
+}
+
+.arendych-table tr:last-child {
+    background: #ffe599 !important;
+    font-weight: 700;
+}
+
+/* ============================================
+   🔥 РЕЖИМ ТОЛЬКО ЧТЕНИЕ (Неавторизованный)
+   ============================================ */
+body.read-only-mode .auth-dependent,
+body.read-only-mode .form-card,
+body.read-only-mode #new-booking-btn,
+body.read-only-mode #show-chemical-btn,
+body.read-only-mode #invoices-btn,
+body.read-only-mode #calendar-panel,
+body.read-only-mode .calendar-toggle-btn {
+    display: none !important;
+}
+
+/* Скрываем форму входа, только если пользователь авторизован (у него есть кнопка выхода) */
+body.read-only-mode #auth-form {
+    /* Не скрываем! */
+}
+
+/* Блокируем курсор на записях */
+body.read-only-mode .booking {
+    pointer-events: none !important;
+    cursor: default !important;
+    opacity: 0.8;
+}
+
+/* ============================================
+   🔥 КОМПАКТНАЯ ТАБЛИЦА ОТЧЕТА (как в Excel)
+   ============================================ */
+.report-table-wrapper {
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px !important; /* Мелкий шрифт */
+}
+
+.report-table th,
+.report-table td {
+    padding: 3px 5px !important; /* Маленькие отступы */
+    border: 1px solid #ccc !important;
+    vertical-align: middle;
+    line-height: 1.2;
+}
+
+.report-table th {
+    background: #e2efda !important; /* Светло-зеленая шапка (как в Excel) */
+    font-weight: 600;
+    text-align: center;
+    color: #000;
+    font-size: 11px !important;
+}
+
+.report-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Уменьшаем шрифт для колонок с суммами */
+.report-cell-amount,
+.report-cell-total {
+    text-align: right;
+    white-space: nowrap; /* Чтобы суммы не переносились */
+}
+
+.report-cell-discount {
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Для колонки "Клиент" делаем перенос, если очень длинно */
+.report-table td:nth-child(2) {
+    max-width: 200px;
+    word-wrap: break-word;
+}

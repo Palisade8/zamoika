@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZA Мойка — Расходные накладные</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body class="page-invoices">
+
+    <!-- Шапка -->
+    <div class="header">
+        <div class="header-inner">
+            <h1>📋 Расходные накладные</h1>
+            <div class="header-actions">
+                <button class="back-btn" onclick="window.location.href='index.html'">← Назад к расписанию</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контейнер -->
+    <main class="page-content">
+
+        <!-- Фильтры -->
+        <section class="card filter-bar">
+            <label>Период:</label>
+            <input type="date" id="start-date">
+            <span>—</span>
+            <input type="date" id="end-date">
+            <button id="refresh-btn" class="btn-submit">🔄 Обновить</button>
+            <button id="create-btn" class="btn-submit btn-success">➕ Создать накладную</button>
+        </section>
+
+        <!-- Вкладки -->
+        <nav class="tabs-nav" role="tablist">
+            <button class="tab-item active" data-tab="tab-invoices" role="tab">
+                📋 Накладные
+            </button>
+            <button class="tab-item" data-tab="tab-chemical" role="tab">
+                🧪 Расход химии
+            </button>
+            <button class="tab-item" data-tab="tab-stock" role="tab">
+                📦 Остатки на складе
+            </button>
+            <button class="tab-item" data-tab="tab-report" role="tab">
+                📊 Отчёт заявок
+            </button>
+        </nav>
+
+        <!-- Вкладка 1: Список накладных -->
+        <section id="tab-invoices" class="tab-panel active" role="tabpanel">
+            <div id="invoices-list" class="card"></div>
+            <div id="detail-panel" class="card" style="display: none;"></div>
+        </section>
+
+        <!-- Вкладка 2: Расход химии -->
+        <section id="tab-chemical" class="tab-panel" role="tabpanel">
+            <div id="chemical-preview" class="card chemical-preview"></div>
+        </section>
+
+        <!-- Вкладка 3: Остатки на складе -->
+        <section id="tab-stock" class="tab-panel" role="tabpanel">
+            <div id="stock-preview" class="card stock-preview"></div>
+        </section>
+
+        <!-- Вкладка 4: Отчёт -->
+        <section id="tab-report" class="tab-panel" role="tabpanel">
+            <div id="report-section" class="card report-section">
+                <h4 class="report-title">📊 Отчёт о выполненных заявках</h4>
+                <div class="report-controls">
+                    <label class="report-date-label">
+                        Дата: <input type="date" id="report-date">
+                    </label>
+                    <button id="generate-report-btn" class="btn-report-generate">📄 Сформировать</button>
+                    <button id="export-csv-btn" class="btn-report-export" style="display: none;">💾 Excel</button>
+                    <button id="print-report-btn" class="btn-report-print" style="display: none;">🖨️ Печать</button>
+ <!-- 🔥 НОВЫЕ ЧЕКБОКСЫ -->
+                    <label style="display: flex; align-items: center; gap: 5px; margin-left: 15px; cursor: pointer; font-weight: 600;">
+                        <input type="checkbox" id="filter-paid" checked> 💳 Только оплаченные
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 5px; margin-left: 15px; cursor: pointer; font-weight: 600;">
+                        <input type="checkbox" id="filter-completed" >  Только завершенные
+                    </label>
+                </div>
+                <div id="report-result"></div>
+<!-- 🔥 НОВЫЙ БЛОК: Мойка Авто. Арендыч -->
+                <hr style="margin: 24px 0; border: none; border-top: 2px dashed #ccc;">
+                <h4 class="report-title" style="margin-top: 10px;">🚗 Мойка Авто. Арендыч (ежемесячно)</h4>
+                <div class="report-controls" style="align-items: center; gap: 10px;">
+                    <label class="report-date-label">
+                        Месяц: <input type="month" id="arendych-month">
+                    </label>
+                    <button id="arendych-generate-btn" class="btn-report-generate">📄 Сформировать</button>
+                </div>
+                <div id="arendych-result"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Загрузка -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="timeSlots.js" defer></script>
+    <script src="main.js" defer></script>
+    <script src="services.js" defer></script>
+    <script src="schedule.js" defer></script>
+    <script src="report.js" defer></script>
+    <script src="invoices.js" defer></script>
+
+</body>
+</html>
